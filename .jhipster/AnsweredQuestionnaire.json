@@ -1,0 +1,37 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "answeredQuestionnaire",
+            "relationshipName": "id",
+            "otherEntityName": "answer",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "questionnaireID",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "createdBy",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "answeredBy",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "answeredDate",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20180809154718",
+    "entityTableName": "answered_questionnaire",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

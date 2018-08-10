@@ -1,0 +1,24 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "answer",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "associatedQuestion",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "associatedQuestionID",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20180809092031",
+    "entityTableName": "answer_meta_data",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

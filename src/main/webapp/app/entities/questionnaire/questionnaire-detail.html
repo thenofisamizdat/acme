@@ -1,0 +1,37 @@
+
+<div>
+    <h2><span>Questionnaire</span> {{vm.questionnaire.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Title</span></dt>
+        <dd>
+            <span>{{vm.questionnaire.title}}</span>
+        </dd>
+        <dt><span>Created By</span></dt>
+        <dd>
+            <span>{{vm.questionnaire.createdBy}}</span>
+        </dd>
+        <dt><span>Created</span></dt>
+        <dd>
+            <span>{{vm.questionnaire.created | date:'medium'}}</span>
+        </dd>
+        <dt><span>Id</span></dt>
+        <dd>
+            <span ng-repeat="id in vm.questionnaire.ids">
+                <a ui-sref="question-detail({id: id.id})">{{id.id}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="questionnaire-detail.edit({id:vm.questionnaire.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down"> Edit</span>
+    </button>
+</div>

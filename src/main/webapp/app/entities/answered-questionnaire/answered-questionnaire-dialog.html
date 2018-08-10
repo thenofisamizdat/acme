@@ -1,0 +1,58 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myAnsweredQuestionnaireLabel">Create or edit a Answered Questionnaire</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.answeredQuestionnaire.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.answeredQuestionnaire.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_questionnaireID">Questionnaire ID</label>
+            <input type="number" class="form-control" name="questionnaireID" id="field_questionnaireID"
+                    ng-model="vm.answeredQuestionnaire.questionnaireID"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_createdBy">Created By</label>
+            <input type="number" class="form-control" name="createdBy" id="field_createdBy"
+                    ng-model="vm.answeredQuestionnaire.createdBy"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_answeredBy">Answered By</label>
+            <input type="number" class="form-control" name="answeredBy" id="field_answeredBy"
+                    ng-model="vm.answeredQuestionnaire.answeredBy"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_answeredDate">Answered Date</label>
+                <div class="input-group">
+                    <input id="field_answeredDate" type="text" class="form-control" name="answeredDate" datetime-picker="{{dateformat}}" ng-model="vm.answeredQuestionnaire.answeredDate" is-open="vm.datePickerOpenStatus.answeredDate"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('answeredDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label for="field_id">Id</label>
+            <select class="form-control" id="field_id" multiple name="id" ng-model="vm.answeredQuestionnaire.ids" ng-options="answer as answer.id for answer in vm.answers track by answer.id"></select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

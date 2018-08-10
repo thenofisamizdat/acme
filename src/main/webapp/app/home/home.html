@@ -1,0 +1,76 @@
+<div ng-cloak>
+    <div class="row">
+        <div class="col-md-4">
+            <span class="hipster img-responsive img-rounded"></span>
+        </div>
+        <div class="col-md-8">
+            <h1>Welcome to ACME</h1>
+
+            <div ng-switch="vm.isAuthenticated()">
+                <p ng-show="!vm.isAuthenticated()" class="lead">To create questions and questionnaires, or to peruse the archive, <br><a class="alert-link" href="" ng-click="vm.login()">sign in here</a> as an admin.</p>
+
+                <div class="alert alert-success" ng-switch-when="true">
+                    You are logged in as user "{{vm.account.login}}".
+                </div>
+
+                <div class="alert alert-warning" ng-switch-when="false">
+                    To <a class="alert-link" href="" ng-click="vm.login()">sign in</a> as admin you can use:<br/>- Administrator (login="admin" and password="admin").
+                </div>
+
+                <div ng-show="!vm.isAuthenticated()" class="lead">To complete questionnaires, or to review your completed questionnaires, <br><a class="alert-link" href="" ng-click="vm.login()">sign in here</a> as a regular user.</div>
+                <div class="alert alert-warning" ng-switch-when="false">
+                    To <a class="alert-link" href="" ng-click="vm.login()">sign in</a> as user you can use:<br/>- User (login="user" and password="user").
+                </div>
+
+                <div class="alert alert-warning" ng-switch-when="false">
+                    Want to register as a new user? <a class="alert-link" ui-sref="register">Register a new account</a>
+                </div>
+            </div>
+
+            <div ng-show="vm.isAuthenticated()">
+                <div ng-show="!vm.checkAdmin()">User</div>
+                <div has-authority="ROLE_ADMIN">
+                    <b>To create a questionnaire we must complete the following steps:</b><br>
+                    - Be sure we have defined our question types.
+                    <li ui-sref-active="active">
+                        <a ui-sref="question-type" ng-click="vm.collapseNavbar()">
+                            <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                            <span>Question Types</span>
+                        </a>
+                    </li>
+                    <br> - Create questions from which to select and populate our questionnaire
+                    <li ui-sref-active="active">
+                        <a ui-sref="question" ng-click="vm.collapseNavbar()">
+                            <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                            <span>Questions</span>
+                        </a>
+                    </li>
+                    <br> - Create our new questionnaire
+                    <li ui-sref-active="active" has-authority="ROLE_USER">
+                        <a ui-sref="questionnaire" ng-click="vm.collapseNavbar()">
+                            <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                            <span>Questionnaires</span>
+                        </a>
+                    </li><br>
+                </div>
+                <div>
+                    <b>Browse <span has-authority="ROLE_ADMIN">archives of all </span>questionnaires and answer sets:</b><br>
+                    <li ui-sref-active="active" >
+                        <a ui-sref="questionnaire" ng-click="vm.collapseNavbar()">
+                            <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                            <span>Questionnaires</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="answered-questionnaire" ng-click="vm.collapseNavbar()">
+                            <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                            <span>Answered Questionnaires</span>
+                        </a>
+                    </li>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

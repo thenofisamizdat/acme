@@ -1,0 +1,77 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myQuestionLabel">Create or edit a Question</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.question.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.question.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_question">Question</label>
+            <input type="text" class="form-control" name="question" id="field_question"
+                    ng-model="vm.question.question" required
+                    />
+            <div ng-show="editForm.question.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.question.$error.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_mandatory">Mandatory</label>
+                <input type="checkbox" name="mandatory" id="field_mandatory"
+                          ng-model="vm.question.mandatory"/>
+        </div>
+
+        <div class="form-group">
+            <label for="field_questionType">Question Type</label>
+            <select class="form-control" id="field_questionType" name="questionType" ng-model="vm.question.questionType" required ng-options="questionType as questionType.type for questionType in vm.questiontypes track by questionType.id">
+                <option value=""></option>
+            </select>
+            <div ng-show="editForm.questionType.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.questionType.$error.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div ng-show="vm.checkQuestionType()" class="form-group">
+            <label class="control-label" style="float: left; width:100%" for="field_answers">Answer Meta Data - Must provide one or more</label>
+            <input style="float: left; width:80%" type="text" class="form-control" name="answers" id="field_answers"
+                   ng-model="vm.answer"
+            />
+            <button type="button" style="float: left; width:20%" ng-click="vm.addToAnswers()" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Add Answer</span>
+            </button>
+            <div style="float:left;width:100%;" class="table-responsive">
+                <table class="jh-table table table-striped">
+                    <tbody>
+                    <tr ng-repeat="answer in vm.question.answers">
+                        <td>{{answer}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--<div style="float:left;" class="form-group">-->
+            <!---->
+        <!--</div>-->
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving || !(vm.checkQuestionType() && vm.question.answers.length > 0)" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

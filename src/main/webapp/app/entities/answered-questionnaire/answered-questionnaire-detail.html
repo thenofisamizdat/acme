@@ -1,0 +1,41 @@
+
+<div>
+    <h2><span>Answered Questionnaire</span> {{vm.answeredQuestionnaire.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Questionnaire ID</span></dt>
+        <dd>
+            <span>{{vm.answeredQuestionnaire.questionnaireID}}</span>
+        </dd>
+        <dt><span>Created By</span></dt>
+        <dd>
+            <span>{{vm.answeredQuestionnaire.createdBy}}</span>
+        </dd>
+        <dt><span>Answered By</span></dt>
+        <dd>
+            <span>{{vm.answeredQuestionnaire.answeredBy}}</span>
+        </dd>
+        <dt><span>Answered Date</span></dt>
+        <dd>
+            <span>{{vm.answeredQuestionnaire.answeredDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>Id</span></dt>
+        <dd>
+            <span ng-repeat="id in vm.answeredQuestionnaire.ids">
+                <a ui-sref="answer-detail({id: id.id})">{{id.id}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="answered-questionnaire-detail.edit({id:vm.answeredQuestionnaire.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down"> Edit</span>
+    </button>
+</div>

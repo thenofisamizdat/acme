@@ -1,5 +1,0 @@
-entity AnswerMetaData{
-    answer String,
-    associatedQuestion String,
-    associatedQuestionID Long
-}

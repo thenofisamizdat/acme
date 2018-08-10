@@ -1,0 +1,43 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "answeredQuestionnaire",
+            "otherEntityName": "answeredQuestionnaire",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "answerText",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "associatedQuestion",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "associatedQuestionID",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "userID",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "answeredDate",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20180809143317",
+    "entityTableName": "answer",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

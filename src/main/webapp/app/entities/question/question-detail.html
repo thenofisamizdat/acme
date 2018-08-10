@@ -1,0 +1,31 @@
+
+<div>
+    <h2><span>Question</span> {{vm.question.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Question</span></dt>
+        <dd>
+            <span>{{vm.question.question}}</span>
+        </dd>
+        <dt><span>Mandatory</span></dt>
+        <dd>
+            <span>{{vm.question.mandatory}}</span>
+        </dd>
+        <dt><span>Question Type</span></dt>
+        <dd>
+            <a ui-sref="question-type-detail({id:vm.question.questionType.id})">{{vm.question.questionType.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="question-detail.edit({id:vm.question.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down"> Edit</span>
+    </button>
+</div>
