@@ -1,10 +1,10 @@
 entity Question{
-    question String,
+    question String required,
     mandatory Boolean
 }
 
 entity QuestionType{
-    type String
+    type String required
 }
 
 entity AnswerMetaData{
@@ -22,7 +22,7 @@ entity Answer{
 }
 
 entity Questionnaire{
-    title String,
+    title String required,
     createdBy Long,
     created ZonedDateTime
 }
