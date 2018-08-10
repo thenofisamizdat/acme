@@ -1,0 +1,39 @@
+entity Question{
+    question String,
+    mandatory Boolean
+}
+
+entity QuestionType{
+    type String
+}
+
+relationship OneToMany{
+    QuestionType{id} to Question{QuestionType(id)}
+}
+
+entity Answer{
+    answerText String required,
+    associatedQuestion String,
+    associatedQuestionID Long,
+    userID Long,
+    answeredDate ZonedDateTime
+}
+
+entity Questionnaire{
+    title String,
+    createdBy Long,
+    created ZonedDateTime
+}
+
+entity AnsweredQuestionnaire{
+    questionnaireID Long,
+    createdBy Long,
+    answeredBy Long,
+    answeredDate ZonedDateTime
+}
+
+
+relationship ManyToMany{
+    Questionnaire{id} to Question{Questionnaire(id)}
+    AnsweredQuestionnaire{id} to Answer{AnsweredQuestionnaire(id)}
+}
