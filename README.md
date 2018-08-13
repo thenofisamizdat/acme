@@ -3,7 +3,7 @@ Acme is a Spring Boot Java application with an AngularJS client.
 
 ## Live Application
 
-The application is (will be soon) live in production mode at 
+The application is live in production mode at http://ec2-34-244-186-177.eu-west-1.compute.amazonaws.com:8080
 
 ## Development
 

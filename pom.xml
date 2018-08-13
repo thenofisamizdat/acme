@@ -4,7 +4,7 @@
 
     <groupId>com.acme</groupId>
     <artifactId>acme</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.9</version>
     <packaging>war</packaging>
     <name>Acme</name>
 
