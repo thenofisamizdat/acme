@@ -1,13 +1,13 @@
 package com.acme.web.rest;
 
+import com.acme.domain.Answer;
+import com.acme.domain.AnsweredQuestionnaire;
 import com.acme.domain.Question;
-import com.acme.repository.AnswerMetaDataRepository;
-import com.acme.repository.AnsweredQuestionnaireRepository;
-import com.acme.repository.UserRepository;
+import com.acme.repository.*;
+import com.acme.repository.search.AnswerSearchRepository;
 import com.codahale.metrics.annotation.Timed;
 import com.acme.domain.Questionnaire;
 
-import com.acme.repository.QuestionnaireRepository;
 import com.acme.repository.search.QuestionnaireSearchRepository;
 import com.acme.web.rest.errors.BadRequestAlertException;
 import com.acme.web.rest.util.HeaderUtil;
@@ -50,12 +50,18 @@ public class QuestionnaireResource {
 
     private final UserRepository userRepository;
 
-    public QuestionnaireResource(QuestionnaireRepository questionnaireRepository, QuestionnaireSearchRepository questionnaireSearchRepository, AnsweredQuestionnaireRepository answeredQuestionnaireRepository, AnswerMetaDataRepository answerMetaDataRepository, UserRepository userRepository) {
+    private final AnswerRepository answerRepository;
+
+    private final AnswerSearchRepository answerSearchRepository;
+
+    public QuestionnaireResource(QuestionnaireRepository questionnaireRepository, QuestionnaireSearchRepository questionnaireSearchRepository, AnsweredQuestionnaireRepository answeredQuestionnaireRepository, AnswerMetaDataRepository answerMetaDataRepository, UserRepository userRepository, AnswerRepository answerRepository, AnswerSearchRepository answerSearchRepository) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionnaireSearchRepository = questionnaireSearchRepository;
         this.answeredQuestionnaireRepository = answeredQuestionnaireRepository;
         this.answerMetaDataRepository = answerMetaDataRepository;
         this.userRepository = userRepository;
+        this.answerRepository = answerRepository;
+        this.answerSearchRepository = answerSearchRepository;
     }
 
     /**
@@ -99,6 +105,24 @@ public class QuestionnaireResource {
         if (questionnaire.getId() == null) {
             return createQuestionnaire(questionnaire);
         }
+
+        try {
+            String user = SecurityContextHolder.getContext().getAuthentication().getName();
+            if (!user.equals("admin")) {
+                for (Question question : questionnaire.getIds()) {
+                    Answer answer = new Answer();
+                    answer.setAnswerText(question.getAnswers().get(0));
+                    answer.setAssociatedQuestion(question.getQuestion());
+                    answer.setAssociatedQuestionID(question.getId());
+                    answer.setAnsweredDate(ZonedDateTime.now());
+                    answerRepository.save(answer);
+                    answerSearchRepository.save(answer);
+
+                }
+            }
+        }
+        catch(Exception e){}
+
         Questionnaire result = questionnaireRepository.save(questionnaire);
         questionnaireSearchRepository.save(result);
         return ResponseEntity.ok()

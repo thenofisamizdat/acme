@@ -69,10 +69,22 @@
                 </table>
             </div>
 
-            <div ng-show="vm.isAuthenticated() && !vm.checkAdmin()">
+            <div ng-show="vm.isAuthenticated() && !vm.checkAdmin() && vm.showQuestionnaireAnswers">
+                <!--Questionnaire Answers Display-->
+                <h3>{{vm.questionnaire.title}} Answers</h3>
+                <dl class="dl-horizontal jh-entity-details">
+                    <tr ng-repeat="question in vm.questionnaire.ids track by question.id">
+                        <!--<td>{{questionnaire.id}}</td>-->
+                        <td>{{question.question}}</td>
+                        <td>{{question.answers[0]}}</td>
+                </dl>
+            </div>
+
+
+            <div ng-show="vm.isAuthenticated() && !vm.checkAdmin() &&vm.showQuestionnaire">
                 <!--Questionnaire Display-->
                 <h3>{{vm.questionnaire.title}}</h3>
-                <dl class="dl-horizontal jh-entity-details" ng-show="vm.showQuestionnaire">
+                <dl class="dl-horizontal jh-entity-details">
                     <span>
                        <br> <h4><b>{{vm.question.question}}</b></h4>
                         <div class="form-group">

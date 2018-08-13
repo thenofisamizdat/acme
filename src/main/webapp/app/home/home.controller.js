@@ -61,7 +61,8 @@
 
         function nextQuestion(){
             console.log("next")
-            vm.questionnaire.ids[vm.currentQuestionNumber].answers = vm.answer; // add answer to question
+            if (!vm.questionnaire.ids[vm.currentQuestionNumber].answers) vm.questionnaire.ids[vm.currentQuestionNumber].answers = [];
+            vm.questionnaire.ids[vm.currentQuestionNumber].answers.push(vm.answer); // add answer to question
             vm.currentQuestionNumber++;
             vm.answers.push(vm.answer);
             vm.answer = "";
@@ -71,6 +72,12 @@
             vm.question = vm.questionnaire.ids[vm.currentQuestionNumber];
         }
         function completeQuestionnaire(){
+            console.log("next")
+            if (!vm.questionnaire.ids[vm.currentQuestionNumber].answers) vm.questionnaire.ids[vm.currentQuestionNumber].answers = [];
+            vm.questionnaire.ids[vm.currentQuestionNumber].answers.push(vm.answer); // add answer to question
+            vm.currentQuestionNumber++;
+            vm.answers.push(vm.answer);
+            vm.answer = "";
             save();
 
         }
@@ -99,8 +106,12 @@
             }
         }
         function onSaveSuccess (result) {
-            $scope.$emit('acmeApp:questionnaireUpdate', result);
+           // $scope.$emit('acmeApp:questionnaireUpdate', result);
             // $uibModalInstance.close(result);
+            vm.showQuestionnaire = false;
+            vm.showQuestionnaireList = false;
+
+            vm.showQuestionnaireAnswers = true;
             vm.isSaving = false;
         }
 
