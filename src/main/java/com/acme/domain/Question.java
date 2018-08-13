@@ -36,6 +36,18 @@ public class Question implements Serializable {
     @JsonProperty
     private List<String> answers;
 
+    public List<String> getAnswerOptions() {
+        return answerOptions;
+    }
+
+    public void setAnswerOptions(List<String> answerOptions) {
+        this.answerOptions = answerOptions;
+    }
+
+    @Transient
+    @JsonProperty
+    private List<String> answerOptions;
+
     public List<String> getAnswers() {
         return answers;
     }

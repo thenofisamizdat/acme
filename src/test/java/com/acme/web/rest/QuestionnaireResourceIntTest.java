@@ -3,7 +3,10 @@ package com.acme.web.rest;
 import com.acme.AcmeApp;
 
 import com.acme.domain.Questionnaire;
+import com.acme.repository.AnswerMetaDataRepository;
+import com.acme.repository.AnsweredQuestionnaireRepository;
 import com.acme.repository.QuestionnaireRepository;
+import com.acme.repository.UserRepository;
 import com.acme.repository.search.QuestionnaireSearchRepository;
 import com.acme.web.rest.errors.ExceptionTranslator;
 
@@ -71,14 +74,24 @@ public class QuestionnaireResourceIntTest {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private MockMvc restQuestionnaireMockMvc;
 
     private Questionnaire questionnaire;
 
+    @Autowired
+    private AnsweredQuestionnaireRepository answeredQuestionnaireRepository;
+
+    @Autowired
+    private AnswerMetaDataRepository answerMetaDataRepository;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final QuestionnaireResource questionnaireResource = new QuestionnaireResource(questionnaireRepository, questionnaireSearchRepository);
+
+        final QuestionnaireResource questionnaireResource = new QuestionnaireResource(questionnaireRepository, questionnaireSearchRepository, answeredQuestionnaireRepository, answerMetaDataRepository, userRepository);
         this.restQuestionnaireMockMvc = MockMvcBuilders.standaloneSetup(questionnaireResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

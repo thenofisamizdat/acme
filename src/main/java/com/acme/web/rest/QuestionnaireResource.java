@@ -1,5 +1,9 @@
 package com.acme.web.rest;
 
+import com.acme.domain.Question;
+import com.acme.repository.AnswerMetaDataRepository;
+import com.acme.repository.AnsweredQuestionnaireRepository;
+import com.acme.repository.UserRepository;
 import com.codahale.metrics.annotation.Timed;
 import com.acme.domain.Questionnaire;
 
@@ -11,11 +15,13 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,9 +44,18 @@ public class QuestionnaireResource {
 
     private final QuestionnaireSearchRepository questionnaireSearchRepository;
 
-    public QuestionnaireResource(QuestionnaireRepository questionnaireRepository, QuestionnaireSearchRepository questionnaireSearchRepository) {
+    private final AnsweredQuestionnaireRepository answeredQuestionnaireRepository;
+
+    private final AnswerMetaDataRepository answerMetaDataRepository;
+
+    private final UserRepository userRepository;
+
+    public QuestionnaireResource(QuestionnaireRepository questionnaireRepository, QuestionnaireSearchRepository questionnaireSearchRepository, AnsweredQuestionnaireRepository answeredQuestionnaireRepository, AnswerMetaDataRepository answerMetaDataRepository, UserRepository userRepository) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionnaireSearchRepository = questionnaireSearchRepository;
+        this.answeredQuestionnaireRepository = answeredQuestionnaireRepository;
+        this.answerMetaDataRepository = answerMetaDataRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -57,6 +72,10 @@ public class QuestionnaireResource {
         if (questionnaire.getId() != null) {
             throw new BadRequestAlertException("A new questionnaire cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        questionnaire.setCreated(ZonedDateTime.now());
+        questionnaire.setCreatedBy(userRepository.findOneByLogin(user).get().getId());
         Questionnaire result = questionnaireRepository.save(questionnaire);
         questionnaireSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/questionnaires/" + result.getId()))
@@ -96,8 +115,22 @@ public class QuestionnaireResource {
     @Timed
     public List<Questionnaire> getAllQuestionnaires() {
         log.debug("REST request to get all Questionnaires");
-        return questionnaireRepository.findAllWithEagerRelationships();
+        List<Questionnaire> questionnaireList = questionnaireRepository.findAllWithEagerRelationships();
+        for (Questionnaire questionnaire : questionnaireList){
+            try {
+                questionnaire.setUser(userRepository.findOne(questionnaire.getCreatedBy()));
+                questionnaire.setAnsweredQuestionnaires(answeredQuestionnaireRepository.findAllByQuestionnaireID(questionnaire.getId()));
+                for (Question question : questionnaire.getIds()){
+                    try {
+                        question.setAnswerOptions(answerMetaDataRepository.findAllAnswersByQuestionID(question.getId()));
+                    }
+                    catch(Exception e){}
+                }
+            }
+            catch(Exception e){}
         }
+        return questionnaireList;
+    }
 
     /**
      * GET  /questionnaires/:id : get the "id" questionnaire.
@@ -110,6 +143,13 @@ public class QuestionnaireResource {
     public ResponseEntity<Questionnaire> getQuestionnaire(@PathVariable Long id) {
         log.debug("REST request to get Questionnaire : {}", id);
         Questionnaire questionnaire = questionnaireRepository.findOneWithEagerRelationships(id);
+
+        try {
+            questionnaire.setUser(userRepository.findOne(questionnaire.getCreatedBy()));
+            questionnaire.setAnsweredQuestionnaires(answeredQuestionnaireRepository.findAllByQuestionnaireID(questionnaire.getId()));
+        }
+        catch(Exception e){}
+
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionnaire));
     }
 

@@ -19,4 +19,6 @@ public interface AnsweredQuestionnaireRepository extends JpaRepository<AnsweredQ
     @Query("select answered_questionnaire from AnsweredQuestionnaire answered_questionnaire left join fetch answered_questionnaire.ids where answered_questionnaire.id =:id")
     AnsweredQuestionnaire findOneWithEagerRelationships(@Param("id") Long id);
 
+    @Query("select distinct answered_questionnaire from AnsweredQuestionnaire answered_questionnaire where answered_questionnaire.questionnaireID =:questionnaire_id")
+    List<AnsweredQuestionnaire> findAllByQuestionnaireID(@Param("questionnaire_id") Long questionnaire_id);
 }

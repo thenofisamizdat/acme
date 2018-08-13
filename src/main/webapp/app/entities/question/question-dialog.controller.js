@@ -21,9 +21,15 @@
         vm.answer = "";
 
         vm.checkQuestionType = checkQuestionType;
+        vm.checkQuestionTypeSubmit = checkQuestionTypeSubmit;
 
         function checkQuestionType(){
             return vm.question.questionType.type == "Drop Down" || vm.question.questionType.type == "Radio";
+        }
+
+        function checkQuestionTypeSubmit(){
+            if (vm.question.questionType.type == "Drop Down" || vm.question.questionType.type == "Radio") return vm.question.answers.length > 0;
+            else return true;
         }
 
         function addToAnswers(){

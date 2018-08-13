@@ -3,10 +3,12 @@ package com.acme.domain;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -32,6 +34,32 @@ public class Questionnaire implements Serializable {
 
     @Column(name = "created")
     private ZonedDateTime created;
+
+    @Transient
+    @JsonProperty
+    private User user;
+
+    public List<AnsweredQuestionnaire> getAnsweredQuestionnaires() {
+        return answeredQuestionnaires;
+    }
+
+    public void setAnsweredQuestionnaires(List<AnsweredQuestionnaire> answeredQuestionnaires) {
+        this.answeredQuestionnaires = answeredQuestionnaires;
+    }
+
+    @Transient
+    @JsonProperty
+    private List<AnsweredQuestionnaire> answeredQuestionnaires;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
 
     @ManyToMany
     @JoinTable(name = "questionnaire_id",

@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="questionnaire.new" >
+                <button class="btn btn-primary" ui-sref="questionnaire.new" has-authority="ROLE_ADMIN">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span class="hidden-xs-down" >
                         Create new Questionnaire
@@ -35,23 +35,31 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr>
-                    <th><span>ID</span></th>
+                    <!--<th><span>ID</span></th>-->
                     <th><span>Title</span></th>
                     <th><span>Created By</span></th>
-                    <th><span>Created</span></th>
-                    <th><span>Id</span></th>
+                    <!--<th><span>Created</span></th>-->
+                    <th><span>Questions</span></th>
+                    <th><span>Answer Sets</span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="questionnaire in vm.questionnaires track by questionnaire.id">
-                    <td><a ui-sref="questionnaire-detail({id:questionnaire.id})">{{questionnaire.id}}</a></td>
-                    <td>{{questionnaire.title}}</td>
-                    <td>{{questionnaire.createdBy}}</td>
-                    <td>{{questionnaire.created | date:'medium'}}</td>
+                    <!--<td>{{questionnaire.id}}</td>-->
+                    <td><a ui-sref="questionnaire-detail({id:questionnaire.id})">{{questionnaire.title}}</a></td>
+                    <td><a ui-sref="user-management-detail({login:questionnaire.user.login})">{{questionnaire.user.login}}</a></td>
+
+
+                    <!--<td>{{questionnaire.created | date:'medium'}}</td>-->
                     <td>
                         <span ng-repeat="id in questionnaire.ids">
-                            <a class="form-control-static" ui-sref="question-detail({id: id.id})">{{id.id}}</a>{{$last ? '' : ', '}}
+                            <a class="form-control-static" ui-sref="question-detail({id: id.id})">{{id.question}}</a>{{$last ? '' : ', '}}
+                        </span>
+                    </td>
+                    <td>
+                        <span ng-repeat="answer in questionnaire.answeredQuestionnaires">
+                            <a class="form-control-static" ui-sref="answered-questionnaire-detail({id:answer.id})">{{answer.answeredBy}}</a>{{$last ? '' : ', '}}
                         </span>
                     </td>
                     <td class="text-right">
